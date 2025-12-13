@@ -1,0 +1,159 @@
+{
+  "personalInfo": {
+    "name": "Marouane ACHARIFI",
+    "role": "Future Robotics Engineer | IoT & AI Specialist",
+    "location": "Nador, Morocco",
+    "phone": "+212 650944873",
+    "email": "marouane6acharifi@gmail.com",
+    "linkedin": "https://linkedin.com/in/marouane-acharifi",
+    "github": "https://github.com/MaroIng01",
+    "summary": "Future Robotics and IoT Engineer specializing in the design of intelligent solutions. I have solid experience in cobotics development integrating AI (Computer Vision) and in designing end-to-end IoT devices. Proficient in low-level programming (C++, ESP32) and control application development (Flutter), I am seeking a 4 to 6-month final-year internship to apply my skills to the creation of autonomous and interactive robotic systems."
+  },
+  "education": [
+    {
+      "school": "National School of AI and Digital, Berkane",
+      "degree": "Master of Engineering in Robotics and IoT",
+      "period": "2023–Present"
+    },
+    {
+      "school": "Faculty of Sciences, Rabat",
+      "degree": "Professional Bachelor’s Degree in Cybersecurity and Systems Engineering",
+      "period": "2022–2023"
+    },
+    {
+      "school": "Higher School of Technology, Oujda",
+      "degree": "University Diploma of Technology in Embedded Computing",
+      "period": "2020–2022"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Flutter Developer Intern",
+      "company": "CDO-Formation",
+      "period": "Jul-Sep 2025",
+      "location": "France-Remote",
+      "description": [
+        "Developed a cross-platform mobile application (iOS & Android) for the CDO-Formation training center using Flutter.",
+        "Provided users with centralized access to the center’s services and practical information.",
+        "Integrated a secure client area via a WebView to ensure a smooth and unified user experience."
+      ]
+    },
+    {
+      "role": "IT Monitoring Intern",
+      "company": "Customs and Indirect Taxes Administration (ADII)",
+      "period": "May-Jul 2023",
+      "location": "Rabat",
+      "description": [
+        "Implemented a comprehensive IT monitoring solution using the Zabbix platform to oversee critical infrastructures.",
+        "Actively monitored Windows servers by deploying and configuring the Zabbix Agent and using the SNMP protocol.",
+        "Monitored network equipment, including F5 BIG-IP load balancers, to ensure high availability.",
+        "Developed custom dashboards and configured alert thresholds to proactively detect and resolve system incidents."
+      ]
+    },
+    {
+      "role": "Embedded Systems Intern",
+      "company": "Mohammed VI University Hospital (CHU)",
+      "period": "Apr-Jun 2022",
+      "location": "Oujda",
+      "description": [
+        "Designed and developed a portable IoT device for real-time processing and tracking of blood samples.",
+        "Programmed an ESP32 microcontroller to integrate a barcode reader, an RFID reader (RC522), a color sensor (TCS3200), and servo motors.",
+        "Configured the device to connect to a WiFi network, retrieve patient data from a remote JSON file, and transmit results to a management system.",
+        "Designed and created a custom 3D-printed enclosure for the prototype using Tinkercad."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Cobotic License Plate Recognition System",
+      "tech": [
+        "Robotics",
+        "Computer Vision",
+        "YOLOv8",
+        "Gemini API",
+        "Hybrid Architecture"
+      ],
+      "description": "Autonomous mobile robot featuring a robust Hybrid Architecture. Combines YOLOv8 for precise object detection with Google's Gemini API for advanced OCR, replacing traditional CRNN for superior accuracy."
+    },
+    {
+      "title": "AgroSys: Smart Solar Irrigation Mobile App",
+      "tech": [
+        "Flutter",
+        "IoT",
+        "Google Generative AI",
+        "RAG"
+      ],
+      "description": "Mobile app for remote irrigation control. Integrated smart assistant using RAG for agronomic advice. Designed embedded control system for hardware communication."
+    },
+    {
+      "title": "Reinforcement Learning AI Agent",
+      "tech": [
+        "Unity ML-Agents",
+        "PPO",
+        "Reinforcement Learning"
+      ],
+      "description": "AI agent capable of autonomous navigation in complex 3D environments using Unity ML-Agents and PPO algorithm."
+    },
+    {
+      "title": "Smart Environment",
+      "tech": [
+        "IoT",
+        "ESP32",
+        "ThingsBoard",
+        "MQTT"
+      ],
+      "description": "Real-time air quality monitoring system. ESP32 collects data and transmits to ThingsBoard cloud via MQTT. Multi-channel alert system for pollution thresholds."
+    },
+    {
+      "title": "Earthquake Magnitude Prediction",
+      "tech": [
+        "Machine Learning",
+        "Python",
+        "Scikit-learn",
+        "Pandas"
+      ],
+      "description": "Regression models (Random Forest, SVR) to predict earthquake magnitude. Achieved 99% R² score."
+    }
+  ],
+  "skills": {
+    "Robotics & IoT": [
+      "Flutter",
+      "Dart",
+      "C/C++",
+      "ROS",
+      "ESP32",
+      "Arduino",
+      "Raspberry Pi",
+      "3D Printing"
+    ],
+    "AI & Data Science": [
+      "Python",
+      "Machine Learning"
+    ],
+    "IT & Systems": [
+      "Cybersecurity Principles"
+    ],
+    "Tools": [
+      "Git",
+      "GitHub",
+      "Trello"
+    ]
+  },
+  "skillDefinitions": {
+    "Flutter": "Google's UI toolkit for natively compiled applications.",
+    "Dart": "Client-optimized language for fast apps on any platform.",
+    "C/C++": "High-performance languages for system programming and robotics.",
+    "ROS": "Robot Operating System for writing robot software.",
+    "ESP32": "Low-cost, low-power SoC with Wi-Fi and Bluetooth.",
+    "Arduino": "Open-source electronics platform for interactive projects.",
+    "Raspberry Pi": "Single-board computer for embedded systems.",
+    "3D Printing": "Additive manufacturing for rapid prototyping.",
+    "Python": "Versatile language for AI, scripting, and automation.",
+    "Machine Learning": "Algorithms that enable computers to learn from data.",
+    "Cybersecurity Principles": "Practices to protect systems and networks.",
+    "Git": "Distributed version control system.",
+    "GitHub": "Platform for hosting and collaborating on code.",
+    "Trello": "Visual tool for project management.",
+    "English (Advanced C1)": "Professional proficiency for global communication."
+  }
+}
