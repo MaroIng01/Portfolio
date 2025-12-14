@@ -1,11 +1,31 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import portfolioData from '../data/portfolio.json';
 import RevealText from './RevealText';
 
 export default function Experience() {
+    const sectionRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"]
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
     return (
-        <section id="experience" className="py-20 bg-deep-void relative">
-            <div className="container mx-auto px-6">
+        <section ref={sectionRef} id="experience" className="py-20 relative overflow-hidden">
+            {/* BIG TYPOGRAPHY BACKGROUND */}
+            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none overflow-hidden select-none z-0">
+                <motion.h1
+                    style={{ y, opacity }}
+                    className="text-[12vw] md:text-[15vw] font-bold text-white/[0.03] font-inter leading-none tracking-tighter"
+                >
+                    EXPERIENCE
+                </motion.h1>
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
                 <div className="mb-16 flex justify-end">
                     <RevealText
                         text="Experience 02."
@@ -37,7 +57,7 @@ export default function Experience() {
                                             borderColor: "rgba(251, 191, 36, 0.5)"
                                         }}
                                         transition={{ type: "spring", stiffness: 300 }}
-                                        className={`p-6 bg-deep-void/80 backdrop-blur-md rounded-xl border border-white/10 relative overflow-hidden ${index % 2 === 0 ? 'md:text-right' : ''}`}
+                                        className={`p-6 bg-deep-void/80 backdrop-blur-md rounded-xl border border-white/10 relative overflow-hidden ${index % 2 === 0 ? 'md:text-left' : 'md:text-left'}`}
                                     >
                                         {/* Shine Effect */}
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />

@@ -8,14 +8,16 @@ import Background from './components/Background';
 
 function App() {
   return (
-    <div className="bg-deep-void min-h-screen text-platinum selection:bg-royal-amethyst selection:text-white overflow-x-hidden perspective-1000">
+    <div className="min-h-screen text-platinum selection:bg-royal-amethyst selection:text-white overflow-x-hidden">
       <Background />
-      <Navbar />
-      <Hero />
-      <About />
-      <Experience />
-      <Projects />
-      <Contact />
+      <div className="relative z-10">
+        <Navbar />
+        <Hero />
+        <About />
+        <Experience />
+        <Projects />
+        <Contact />
+      </div>
     </div>
   )
 }

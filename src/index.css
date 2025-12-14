@@ -4,6 +4,11 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --deep-void: #050505;
+  --royal-amethyst: #8b5cf6;
+  --amethyst-light: #d946ef;
+  --champagne-gold: #fbbf24;
+  --platinum: #e2e8f0;
 }
 
 body {

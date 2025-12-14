@@ -1,15 +1,33 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import portfolioData from '../data/portfolio.json';
 import RevealText from './RevealText';
 import { X } from 'lucide-react';
 
 export default function About() {
     const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+    const sectionRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"]
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
     return (
-        <section id="about" className="py-20 bg-deep-void relative">
-            <div className="container mx-auto px-6">
+        <section ref={sectionRef} id="about" className="py-20 relative overflow-hidden">
+            {/* BIG TYPOGRAPHY BACKGROUND */}
+            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none overflow-hidden select-none z-0">
+                <motion.h1
+                    style={{ y, opacity }}
+                    className="text-[20vw] font-bold text-white/[0.03] font-inter leading-none tracking-tighter"
+                >
+                    ABOUT
+                </motion.h1>
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -29,7 +47,7 @@ export default function About() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="text-platinum text-lg leading-relaxed font-inter"
+                        className="text-platinum text-lg leading-relaxed font-inter bg-deep-void/60 backdrop-blur-sm p-6 rounded-xl border border-white/5"
                     >
                         <p className="mb-6">
                             {portfolioData.personalInfo.summary}

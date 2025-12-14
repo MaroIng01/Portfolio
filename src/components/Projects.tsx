@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
 import portfolioData from '../data/portfolio.json';
 import { ExternalLink, Github } from 'lucide-react';
 import RevealText from './RevealText';
@@ -53,12 +53,12 @@ const TiltCard = ({ project, index }: { project: any, index: number }) => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className="relative group h-full w-full rounded-xl bg-white/5 border border-white/10 hover:border-royal-amethyst/50 transition-colors duration-300"
+            transition={{ delay: index * 0.1, duration: 0.8 }}
+            className="relative group h-full w-full rounded-xl bg-white/5 border border-white/10 hover:border-royal-amethyst/50 transition-colors duration-300 backdrop-blur-sm"
         >
             <div
                 style={{ transform: "translateZ(50px)" }}
-                className="absolute inset-4 rounded-lg bg-deep-void/50 shadow-inner flex flex-col p-6 pointer-events-none"
+                className="absolute inset-4 rounded-lg bg-deep-void/80 shadow-inner flex flex-col p-6 pointer-events-none"
             >
                 {/* Tech Badges */}
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -91,9 +91,28 @@ const TiltCard = ({ project, index }: { project: any, index: number }) => {
 };
 
 export default function Projects() {
+    const sectionRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"]
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
     return (
-        <section id="projects" className="py-20 bg-deep-void relative perspective-1000">
-            <div className="container mx-auto px-6">
+        <section ref={sectionRef} id="projects" className="py-20 relative overflow-hidden">
+            {/* BIG TYPOGRAPHY BACKGROUND */}
+            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none overflow-hidden select-none z-0">
+                <motion.h1
+                    style={{ y, opacity }}
+                    className="text-[15vw] md:text-[20vw] font-bold text-white/[0.03] font-inter leading-none tracking-tighter"
+                >
+                    WORK
+                </motion.h1>
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
                 <div className="mb-16 flex justify-center">
                     <RevealText
                         text="Selected Works 03."
@@ -102,7 +121,7 @@ export default function Projects() {
                     />
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                     {portfolioData.projects.map((project, index) => (
                         <TiltCard key={index} project={project} index={index} />
                     ))}
