@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 
 export default function Background() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -24,110 +23,134 @@ export default function Background() {
         window.addEventListener('resize', resize);
         resize();
 
-        // Particles
-        const particles: { x: number; y: number; vx: number; vy: number; size: number }[] = [];
-        const particleCount = 100; // Adjust for density
-        const connectionDistance = 150;
+        // SLAM / Lidar Configuration
+        const pointCount = 400;
+        const points: { x: number; y: number; z: number; originalY: number }[] = [];
+        const fov = 300; // Field of view
 
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 2 + 1,
-            });
-        }
-
-        // Mouse interaction
         let mouseX = 0;
         let mouseY = 0;
 
-        function handleMouseMove(e: MouseEvent) {
-            const rect = canvas!.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
+        // Initialize points in a 3D tunnel/floor shape
+        for (let i = 0; i < pointCount; i++) {
+            points.push({
+                x: (Math.random() - 0.5) * width * 2, // Spread wide
+                y: (Math.random() - 0.5) * height * 2, // Spread tall
+                z: Math.random() * 2000,
+                originalY: 0 // Will set later
+            });
+            points[i].originalY = points[i].y;
         }
 
-        if (containerRef.current) {
-            containerRef.current.addEventListener('mousemove', handleMouseMove);
+        function handleMouseMove(e: MouseEvent) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         }
+        window.addEventListener('mousemove', handleMouseMove);
+
+        let animationFrameId: number;
+        let time = 0;
 
         function animate() {
-            ctx!.clearRect(0, 0, width, height);
-
-            // Draw gradient background
-            const gradient = ctx!.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width);
-            gradient.addColorStop(0, '#0f0c29'); // Deep Blue/Purple
-            gradient.addColorStop(0.5, '#302b63'); // Rich Purple
-            gradient.addColorStop(1, '#24243e'); // Dark Blue
-            ctx!.fillStyle = gradient;
+            // Dark "Void" Background
+            ctx!.fillStyle = '#050505';
             ctx!.fillRect(0, 0, width, height);
 
-            ctx!.fillStyle = 'rgba(139, 92, 246, 0.5)'; // Royal Amethyst
-            ctx!.strokeStyle = 'rgba(139, 92, 246, 0.15)';
+            // Tech Grid floor (Perspective)
+            // Not drawing lines to keep it clean, just points
 
-            particles.forEach((p, i) => {
-                // Update position
-                p.x += p.vx;
-                p.y += p.vy;
+            time += 2; // Speed of travel
 
-                // Bounce off edges
-                if (p.x < 0 || p.x > width) p.vx *= -1;
-                if (p.y < 0 || p.y > height) p.vy *= -1;
+            points.forEach(p => {
+                // Move point towards camera
+                p.z -= 2;
+                if (p.z <= 1) p.z = 2000; // Reset to back
 
-                // Mouse interaction - slightly attract to mouse
-                const dx = mouseX - p.x;
-                const dy = mouseY - p.y;
+                // 3D Projection
+                const scale = fov / (fov + p.z);
+                const x2d = (p.x * scale) + width / 2;
+                const y2d = (p.y * scale) + height / 2;
+
+                // Mouse Repulsion (in 2D space for feel)
+                const dx = x2d - mouseX;
+                const dy = y2d - mouseY;
                 const dist = Math.sqrt(dx * dx + dy * dy);
+
+                // Active "Scanning" highlight
+                // Highlight points that are at a specific Z depth (Scan wave)
+                const scanWave = (p.z + time * 10) % 1000;
+                const isScanning = scanWave < 100;
+
+                // Color & Size
+                let alpha = (1 - p.z / 2000) * 0.8; // Fade in back
+                let size = scale * 3;
+
+                // Interaction
                 if (dist < 200) {
-                    p.x += dx * 0.005;
-                    p.y += dy * 0.005;
+                    ctx!.fillStyle = '#ffffff'; // White hot on hover
+                    size *= 1.5;
+                } else if (isScanning) {
+                    ctx!.fillStyle = '#06b6d4'; // Cyan scan line
+                    alpha = 1;
+                } else {
+                    ctx!.fillStyle = `rgba(139, 92, 246, ${alpha})`; // Purple dust
                 }
 
-                // Draw particle
+                // Draw
                 ctx!.beginPath();
-                ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx!.globalAlpha = alpha;
+                ctx!.arc(x2d, y2d, size, 0, Math.PI * 2);
                 ctx!.fill();
+                ctx!.globalAlpha = 1.0;
 
-                // Draw connections
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const dx = p.x - p2.x;
-                    const dy = p.y - p2.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
+                // Connectivity (Neural lines) for nearby points in 2D
+                // Only draw lines if points are close in screen space AND Z-space (to avoid weird jumps)
+                // Doing this for all points is expensive (O(N^2)). Let's skip for performance or do simple "constellation"
+            });
 
-                    if (distance < connectionDistance) {
-                        ctx!.beginPath();
-                        ctx!.moveTo(p.x, p.y);
-                        ctx!.lineTo(p2.x, p2.y);
-                        ctx!.stroke();
-                    }
+            // Draw "Targeting Reticle" around mouse
+            ctx!.strokeStyle = 'rgba(6, 182, 212, 0.5)';
+            ctx!.lineWidth = 1;
+            ctx!.beginPath();
+            ctx!.arc(mouseX, mouseY, 30, 0, Math.PI * 2);
+            ctx!.stroke();
+            ctx!.beginPath();
+            ctx!.arc(mouseX, mouseY, 5, 0, Math.PI * 2);
+            ctx!.fill();
+
+            // connecting lines to nearest points from mouse
+            // "Lidar Lock"
+            points.forEach(p => {
+                const scale = fov / (fov + p.z);
+                const x2d = (p.x * scale) + width / 2;
+                const y2d = (p.y * scale) + height / 2;
+                const dx = x2d - mouseX;
+                const dy = y2d - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 100) {
+                    ctx!.beginPath();
+                    ctx!.strokeStyle = `rgba(6, 182, 212, ${1 - dist / 100})`;
+                    ctx!.moveTo(mouseX, mouseY);
+                    ctx!.lineTo(x2d, y2d);
+                    ctx!.stroke();
                 }
             });
 
-            // Mouse Spotlight (Draw a glow around mouse)
-            const mouseGradient = ctx!.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 300);
-            mouseGradient.addColorStop(0, 'rgba(139, 92, 246, 0.1)');
-            mouseGradient.addColorStop(1, 'transparent');
-            ctx!.fillStyle = mouseGradient;
-            ctx!.fillRect(0, 0, width, height);
-
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         }
 
         animate();
 
         return () => {
             window.removeEventListener('resize', resize);
-            if (containerRef.current) {
-                containerRef.current.removeEventListener('mousemove', handleMouseMove); // Cleanup
-            }
+            window.removeEventListener('mousemove', handleMouseMove);
+            cancelAnimationFrame(animationFrameId);
         };
     }, []);
 
     return (
-        <div ref={containerRef} className="fixed inset-0 -z-10 bg-deep-void">
+        <div className="fixed inset-0 -z-10 bg-[#050505]">
             <canvas ref={canvasRef} className="block w-full h-full" />
         </div>
     );

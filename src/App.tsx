@@ -8,6 +8,8 @@ import Contact from './components/Contact';
 import Background from './components/Background';
 import { locales } from './data/locales';
 
+import MusicPlayer from './components/MusicPlayer';
+
 function App() {
   const [language, setLanguage] = useState<'en' | 'fr'>('en');
 
@@ -17,6 +19,7 @@ function App() {
     <>
       <div className="min-h-screen text-platinum selection:bg-royal-amethyst selection:text-white overflow-x-hidden opacity-100">
         <Background />
+        <MusicPlayer />
         <div className="relative z-10">
           <Navbar
             navData={t.nav}
