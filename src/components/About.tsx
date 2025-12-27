@@ -55,20 +55,25 @@ export default function About({ data, personalInfo, skills, skillDescriptions }:
                                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                                 className="relative z-10"
                             >
-                                <div className="relative rounded-2xl p-1 overflow-hidden bg-gradient-to-br from-royal-amethyst via-transparent to-champagne-gold shadow-[0_0_50px_rgba(139,92,246,0.3)] hover:shadow-[0_0_80px_rgba(251,191,36,0.4)] transition-all duration-500">
-                                    <div className="rounded-xl overflow-hidden relative bg-deep-void">
-                                        <div className="absolute inset-0 bg-royal-amethyst/20 mix-blend-overlay z-10"></div>
+                                <div className="relative group">
+                                    {/* Glass Backplate 1 - Rotated */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-royal-amethyst/30 to-champagne-gold/30 rounded-2xl rotate-6 scale-95 blur-sm transition-all duration-500 group-hover:rotate-12 group-hover:scale-105"></div>
+
+                                    {/* Glass Backplate 2 - Opposite Rotation */}
+                                    <div className="absolute inset-0 bg-white/5 rounded-2xl -rotate-3 scale-95 backdrop-blur-md border border-white/10 transition-all duration-500 group-hover:-rotate-6 group-hover:scale-105"></div>
+
+                                    {/* Main Image Container */}
+                                    <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+                                        <div className="absolute inset-0 bg-royal-amethyst/10 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-500"></div>
                                         <img
                                             src="/profile.jpg"
                                             alt="Profil"
-                                            className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
+                                            className="w-full h-auto object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
                                         />
-                                        {/* Cyber Overlay UI */}
-                                        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/80 to-transparent z-20"></div>
-                                        <div className="absolute bottom-4 left-4 z-30">
-                                            <div className="h-1 w-12 bg-champagne-gold mb-2"></div>
-                                            <p className="text-white font-orbitron text-sm tracking-widest">{personalInfo.name || "PORTFOLIO"}</p>
-                                        </div>
+
+                                        {/* Minimal Corner Accents */}
+                                        <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-champagne-gold/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-champagne-gold/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     </div>
                                 </div>
                                 {/* Decorative elements */}
